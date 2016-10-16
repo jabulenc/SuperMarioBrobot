@@ -28,6 +28,12 @@ B? Currently not sure if this is actually necessary to play the game.
 
 ### Driver
 The LUA script that will interface with the emulator. Handles emulator-side actions. Will be hand-written
+```
+TODO:
+Determine how to record play
+Determine outputs of recording
+Determine if there are any issues staying freeze-framed
+```
 
 ### Reader
 Pre-existing tool, modified to fit the project. 
@@ -36,6 +42,8 @@ Tesseract OCR
 
 ### Learner
 Built in Torch. Takes inputs from the Reader and the Driver to determine the next frame's action.
+```
 TODO:
 Prototype inputs
 Prototype outputs
+```
