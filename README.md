@@ -6,6 +6,7 @@ A three component'd CV-Based learning system that plays (at the moment) Super Ma
 
 ### Inputs to Learner
 Data from Reader - TBD
+
 Output taken at this frame (LEARNING PORTION ONLY).
 
 ### Outputs from Learner (to Driver)
