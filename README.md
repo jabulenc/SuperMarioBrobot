@@ -9,6 +9,7 @@ Data from Reader - TBD
 Output taken at this frame (LEARNING PORTION ONLY).
 
 ### Outputs from Learner (to Driver)
+```
 UP
 DOWN
 LEFT
@@ -20,6 +21,7 @@ DOWN + A
 LEFT + A
 RIGHT + A
 B? Currently not sure if this is actually necessary to play the game.
+```
 
 ## Three Components: Driver, Reader, Learner
 
