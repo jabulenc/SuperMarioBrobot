@@ -1,49 +1,42 @@
 # SuperMarioBrobot
-An excessively complicated, 'seeing' bot for Super Marios Bros. Senior Project CMSC498I
+Computer Vision Convolutional Neural Network based runbot for Super Marios Bros. 
+Senior Project CMSC498I
 
 ## Overview
-A three component'd CV-Based learning system that plays (at the moment) Super Marios Bros and learns to play. This fits in the project specs because it counts as a classification. The core of this project (the one LSD wants the most) is the Learner.
+Utilizes a CNN to analyze a play through frame-by-frame to determine input based on training data.
 
-### Inputs to Learner
-Data from Reader - TBD
+Models SMB as a 22-class problem, with 22 being the total number of human-possible input combinations, excluding Start and Select
 
-Output taken at this frame (LEARNING PORTION ONLY).
+### Architecture
+TODO
 
-### Outputs from Learner (to Driver)
+### Classification Scheme
+To work within the confines of the assignment, we modeled the game as a n-class problem.
+
+n was set to 22 (tenative) to represent the 22 button combinations that will induce movement in SMB:
 ```
-UP
-DOWN
-LEFT
-RIGHT
+ULAB
+URAB
+DLAB
+DRAB
+UAB
+DAB
+LAB
+RAB
+UA
+UB
+DA
+DB
+LA
+LB
+RA
+RB
+U
+D
+L
+R
 A
-UP + A
-UP + A
-DOWN + A
-LEFT + A
-RIGHT + A
-B? Currently not sure if this is actually necessary to play the game.
+B
 ```
 
-## Three Components: Driver, Reader, Learner
 
-### Driver
-The LUA script that will interface with the emulator. Handles emulator-side actions. Will be hand-written
-```
-TODO:
-Determine how to record play
-Determine outputs of recording
-Determine if there are any issues staying freeze-framed
-```
-
-### Reader
-Pre-existing tool, modified to fit the project. 
-Candidates:
-Tesseract OCR
-
-### Learner
-Built in Torch. Takes inputs from the Reader and the Driver to determine the next frame's action.
-```
-TODO:
-Prototype inputs
-Prototype outputs
-```
