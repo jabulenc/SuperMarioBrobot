@@ -1,7 +1,7 @@
 -- Training Data Producer for SMBRobot
 -- 10/23/2016
 -- Key:
--- F: Frame
+-- F: Count/Frame
 -- W: World
 -- L: Level
 -- T: Time
@@ -11,8 +11,10 @@
 -- Vx: Velocity X
 -- Vy: Velocity Y
 -- I: Input - will only output LRUPBA depending input
+emu.loadrom(emu.getdir()..'/Super Mario Bros. (Japan, USA).zip');
 successOrFail = "";
 date = os.date("./testdata/%Y%m%d%H%M%S");
+run = 0;
 count = 0;
 input = {};
 sortString = "\"frame\",\"World\",\"Level\",\"Time\",\"Score\",\"X\",\"Y\",\"Vx\",\"Vy\",\"Input\"\n";
@@ -25,12 +27,13 @@ savestate.load(save);
 function genNewFile()
     --file:write("\n"..successOrFail.."\n"); We don't need success or fail. We'll just base our machine on fitness of higher X, Y, Score, Time.
     count = 0;
-    file:close();
+    run = run+1;
+    --file:close();
     savestate.load(save);
-    date = os.date("./testdata/%Y%m%d%H%M%S");
-    os.execute("mkdir"..date);
-    file = io.open(date..".csv","w");
-    file:write(sortString);
+    --date = os.date("./testdata/%Y%m%d%H%M%S");
+    --os.execute("mkdir"..date);
+    --file = io.open(date..".csv","w");
+    --file:write(sortString);
 end
 
 -- Return Joypad input as string
@@ -47,7 +50,7 @@ end;
 
 function outputtext()
     getInput();
-    file:write("\""..count.."\","); -- Frame number
+    file:write("\""..run.."_"..count.."\","); -- Frame number
     file:write("\""..memory.readbyte(0x075F).."\","); --World
     file:write("\""..memory.readbyte(0x0760).."\","); --Level
     file:write("\""..memory.readbyte(0x07F8)..memory.readbyte(0x07F9)..memory.readbyte(0x07FA).."\","); --Time
@@ -61,10 +64,9 @@ function outputtext()
 end
 -- 4, 0, 11 (0C) are Non-play
 -- 8 is normal
-
 while true do
     outputtext();
-    gui.savescreenshotas(date.."/"..count..".png");
+    gui.savescreenshotas(date.."/"..run.."_"..count..".png");
     if (memory.readbyte(0x000E) == 0 or memory.readbyte(0x000E) == 11 or memory.readbyte(0x000E) == 4) then
         if (memory.readbyte(0x000E) == 0 or memory.readbyte(0x000E) == 11) then
             successOrFail = 0;
