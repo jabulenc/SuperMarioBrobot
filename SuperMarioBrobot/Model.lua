@@ -1,4 +1,4 @@
--- 22 Class Problem
+-- 24 Class Problem
 require 'nn'
 require 'cudnn'
 require 'torch'
@@ -47,7 +47,7 @@ classifier:add(nn.Linear(128, 64))
 classifier:add(nn.Dropout(0.5))
 classifier:add(nn.Linear(64, 32))
 classifier:add(nn.Dropout(0.5))
-classifier:add(nn.Linear(32, 22))
+classifier:add(nn.Linear(32, 24))
 classifier:add(nn.LogSoftMax())
 
 local model = nn.Sequential()
