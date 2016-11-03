@@ -1,9 +1,24 @@
 
 require 'image'   -- to visualize the dataset
-require 'ffmpeg'
 require 'csvigo'
 
 ----------------------------------------------------------------------
+
+table.indexOf = function( t, object )
+	local result
+
+	if "table" == type( t ) then
+		for i=1,#t do
+			if object == t[i] then
+				result = i
+				break
+			end
+		end
+	end
+
+	return result
+end
+
 
 function ls(path) return sys.split(sys.ls(path),'\n') end -- alf ls() nice function!
 
@@ -24,17 +39,20 @@ else
 
    print(sys.COLORS.red ..  '==> creating a new dataset from raw files:')
 
-   
+   classes = {'ULAB','URAB', 'DLAB', 'DRAB',
+            'UAB', 'DAB', 'LAB', 'RAB', 'UA', 'UB', 'DA', 'DB', 'LA', 'LB',
+            'RA', 'RB', 'AB', 'U', 'D', 'L', 'R', 'A', 'B', ''}
+
    local trainDir = '../FCEUX/testdata/'
-   local trSize = #ls(trainDir)
+   local trSize = #ls(trainDir) - 2
    local testDir = '../FCEUX/evaldata/'
-   local teSize = #ls(testDir)
+   local teSize = #ls(testDir) - 2
    local trainMeta = csvigo.load{path=trainDir.."metadata.csv", mode = 'query'}
    local testMeta = csvigo.load{path=testDir.."metadata.csv", mode = 'query'}
 
    trainData = {
       data = torch.Tensor(trSize, 3, 256, 224),
-      labels = torch.Tensor(trSize),
+      labels = torch.Tensor(trSize, 4),
       size = function() return trSize end
    }
 
@@ -42,10 +60,11 @@ else
    local trShuffle = torch.randperm(trSize) -- train shuffle
    
    -- load person train data
-   for i = 1, trSize, 1 do
+   for i = 1, trSize - 1 , 1 do
       img = image.load(trainDir..i..".png",3,'byte') -- we pick all of the images in train!
       trainData.data[trShuffle[i]] = img:clone()
-      trainData.labels[trShuffle[i]] = trainMeta('frame', {frame=i}).Input[1] -- gets the input string rep
+      derp = trainMeta('union', {Level=0,World=0}).Input[i]
+      trainData.labels[trShuffle[i]] = table.indexOf(classes, derp) --trainMeta('union', {Level=0,World=0}).Input[i] -- gets the input string rep
    end
    -- display some examples:
    if opt.visualize then
@@ -59,10 +78,11 @@ else
    }
 
    -- load person test data
-   for i = 1, teSize, 1 do
+   for i = 1, teSize - 1, 1 do
       img = image.load(trainDir..i..".png",3,'byte') -- we pick all of the images in train!
       trainData.data[trShuffle[i]] = img:clone()
-      trainData.labels[trShuffle[i]] = testMeta('frame', {frame=i}).Input[1] -- gets the input string rep
+      derp = trainMeta('union', {Level=0,World=0}).Input[i]
+      trainData.labels[trShuffle[i]] = table.indexOf(classes, derp) --trainMeta('union', {Level=0,World=0}).Input[i] -- gets the input string rep
    end
    -- display some examples:
    if opt.visualize then
@@ -93,8 +113,8 @@ testData.size = function() return teSize end
 
 -- classes: GLOBAL var!
 classes = {'ULAB','URAB', 'DLAB', 'DRAB',
-            'UAB', 'DAB', 'LAB', 'RAB', 'UA',. 'UB', 'DA', 'DB', 'LA', 'LB'
-            'RA', 'RB', 'U', 'D', 'L', 'R', 'A', 'B', ''}
+            'UAB', 'DAB', 'LAB', 'RAB', 'UA', 'UB', 'DA', 'DB', 'LA', 'LB',
+            'RA', 'RB', 'AB', 'U', 'D', 'L', 'R', 'A', 'B', ''}
 
 -- Exports -------------------------------------------------------------------
 return {
