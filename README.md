@@ -13,7 +13,7 @@ TODO
 ### Classification Scheme
 To work within the confines of the assignment, we modeled the game as a n-class problem.
 
-n was set to 22 (tenative) to represent the 22 button combinations that will induce movement in SMB:
+n was set to 26 (tenative) to represent the 22 button combinations that will induce movement in SMB:
 ```
 ULAB
 URAB
@@ -31,12 +31,16 @@ LA
 LB
 RA
 RB
+AB
 U
 D
 L
 R
 A
 B
+START
+SELECT
+''
 ```
 
 
