@@ -41,7 +41,7 @@ else
 
    classes = {'ULAB','URAB', 'DLAB', 'DRAB',
             'UAB', 'DAB', 'LAB', 'RAB', 'UA', 'UB', 'DA', 'DB', 'LA', 'LB',
-            'RA', 'RB', 'AB', 'U', 'D', 'L', 'R', 'A', 'B', ''}
+            'RA', 'RB', 'AB', 'U', 'D', 'L', 'R', 'A', 'B', 'START', 'SELECT',''}
 
    local trainDir = '../FCEUX/testdata/'
    local trSize = #ls(trainDir) - 2
@@ -114,7 +114,7 @@ testData.size = function() return teSize end
 -- classes: GLOBAL var!
 classes = {'ULAB','URAB', 'DLAB', 'DRAB',
             'UAB', 'DAB', 'LAB', 'RAB', 'UA', 'UB', 'DA', 'DB', 'LA', 'LB',
-            'RA', 'RB', 'AB', 'U', 'D', 'L', 'R', 'A', 'B', ''}
+            'RA', 'RB', 'AB', 'U', 'D', 'L', 'R', 'A', 'B', 'START', 'SELECT',''}
 
 -- Exports -------------------------------------------------------------------
 return {

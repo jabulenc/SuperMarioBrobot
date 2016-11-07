@@ -18,10 +18,11 @@ count = 0;
 input = {};
 sortString = "\"frame\",\"World\",\"Level\",\"Time\",\"Score\",\"X\",\"Y\",\"Vx\",\"Vy\",\"Input\"\n";
 os.execute("mkdir"..date);
-file = io.open(date.."/metadata.csv","w");
+file = io.open("./testdata/metadata.csv","w");
 file:write(sortString);
-save = savestate.object(1);
-savestate.load(save);
+--IMPORTANT KEEP THESE
+--save = savestate.object(1);
+--savestate.load(save);
 
 -- Commented out some lines to make things easier on the data side
 function genNewFile()
@@ -29,7 +30,9 @@ function genNewFile()
     --count = 0;
     --run = run+1;
     --file:close();
-    savestate.load(save);
+    --
+    --savestate.load(save); KEEP THIS
+    --
     --date = os.date("./testdata/%Y%m%d%H%M%S");
     --os.execute("mkdir"..date);
     --file = io.open(date..".csv","w");
@@ -40,6 +43,14 @@ end
 function getInput()
     input = "";
     inputs = joypad.get(1);
+    if (inputs.start) then 
+        input = input.."START"
+        return 
+        end;
+    if (inputs.select) then 
+        input = input.."SELECT"
+        return 
+        end;
     if (inputs.up) then input = input.."U" end;
     if (inputs.down) then input = input.."D" end;
     if (inputs.left) then input = input.."L" end;
@@ -66,7 +77,7 @@ end
 -- 8 is normal
 while true do
     outputtext();
-    gui.savescreenshotas(date.."/"..count..".png");
+    gui.savescreenshotas("./testdata/"..count..".png");
     if (memory.readbyte(0x000E) == 0 or memory.readbyte(0x000E) == 11 or memory.readbyte(0x000E) == 4) then
         if (memory.readbyte(0x000E) == 0 or memory.readbyte(0x000E) == 11) then
             successOrFail = 0;

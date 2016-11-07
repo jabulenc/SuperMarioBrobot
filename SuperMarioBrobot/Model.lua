@@ -1,4 +1,4 @@
--- 24 Class Problem
+-- 26 Class Problem
 require 'nn'
 require 'cudnn'
 require 'torch'
@@ -31,23 +31,13 @@ classifier:add(nn.View(256*6*6))
 classifier:add(nn.Dropout(0.5))
 classifier:add(nn.Linear(256*6*6, 4096))
 classifier:add(nn.Dropout(0.5))
-classifier:add(nn.Linear(4096, 4096))
+classifier:add(nn.Linear(4096, 1024))
 classifier:add(nn.Dropout(0.5))
-classifier:add(nn.Linear(4096, 2048))
+classifier:add(nn.Linear(1024, 128))
 classifier:add(nn.Dropout(0.5))
-classifier:add(nn.Linear(2048, 1024))
+classifier:add(nn.Linear(128, 32))
 classifier:add(nn.Dropout(0.5))
-classifier:add(nn.Linear(1024, 512))
-classifier:add(nn.Dropout(0.5))
-classifier:add(nn.Linear(512, 256))
-classifier:add(nn.Dropout(0.5))
-classifier:add(nn.Linear(256, 128))
-classifier:add(nn.Dropout(0.5))
-classifier:add(nn.Linear(128, 64))
-classifier:add(nn.Dropout(0.5))
-classifier:add(nn.Linear(64, 32))
-classifier:add(nn.Dropout(0.5))
-classifier:add(nn.Linear(32, 24))
+classifier:add(nn.Linear(32, 26))
 classifier:add(nn.LogSoftMax())
 
 local model = nn.Sequential()
