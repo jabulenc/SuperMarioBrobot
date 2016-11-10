@@ -60,9 +60,11 @@ function test(testData)
 
       -- test sample
       local preds = model:forward(inputs)
-
       -- confusion
       for i = 1,opt.batchSize do
+        print (preds[i])
+        print (targets[i])
+        print ()
          confusion:add(preds[i], targets[i])
       end
    end

@@ -86,7 +86,11 @@ print(sys.COLORS.red ..  '==> defining training procedure')
 local epoch
 
 local function train(trainData)
-
+    print (trainData.data:size())
+    print (trainData.labels:size())
+    print (x:size())
+    print (yt:size())
+    
    -- epoch tracker
    epoch = epoch or 1
 
@@ -138,7 +142,6 @@ local function train(trainData)
          -- return f and df/dX
          return E,dE_dw
       end
-
       -- optimize on current mini-batch
       optim.sgd(eval_E, w, optimState)
    end

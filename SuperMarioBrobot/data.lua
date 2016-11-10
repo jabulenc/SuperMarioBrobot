@@ -44,15 +44,15 @@ else
             'RA', 'RB', 'AB', 'U', 'D', 'L', 'R', 'A', 'B', 'START', 'SELECT',''}
 
    local trainDir = '../FCEUX/testdata/'
-   local trSize = #ls(trainDir) - 2
+   local trSize = #ls(trainDir) - 1
    local testDir = '../FCEUX/evaldata/'
-   local teSize = #ls(testDir) - 2
+   local teSize = #ls(testDir) - 1
    local trainMeta = csvigo.load{path=trainDir.."metadata.csv", mode = 'query'}
    local testMeta = csvigo.load{path=testDir.."metadata.csv", mode = 'query'}
 
    trainData = {
       data = torch.Tensor(trSize, 3, 256, 224),
-      labels = torch.Tensor(trSize, 4),
+      labels = torch.Tensor(trSize),
       size = function() return trSize end
    }
 
@@ -60,7 +60,7 @@ else
    local trShuffle = torch.randperm(trSize) -- train shuffle
    
    -- load person train data
-   for i = 1, trSize - 1 , 1 do
+   for i = 1, trSize , 1 do
       img = image.load(trainDir..i..".png",3,'byte') -- we pick all of the images in train!
       trainData.data[trShuffle[i]] = img:clone()
       derp = trainMeta('union', {Level=0,World=0}).Input[i]
@@ -78,7 +78,7 @@ else
    }
 
    -- load person test data
-   for i = 1, teSize - 1, 1 do
+   for i = 1, teSize , 1 do
       img = image.load(trainDir..i..".png",3,'byte') -- we pick all of the images in train!
       trainData.data[trShuffle[i]] = img:clone()
       derp = trainMeta('union', {Level=0,World=0}).Input[i]
