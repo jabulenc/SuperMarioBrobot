@@ -8,38 +8,34 @@ require 'torch'
 -- NES Supported Sprites: 8x8, 8x16
 -- Floor dims (I think): 24x16
 
-local CNN = nn.Sequential();
+local model
+if opt.load == "" then
+
+model = nn.Sequential();
 
 -- Stage 1
-CNN:add(nn.SpatialConvolution(3,64,16,16,8,8,2,2));
-CNN:add(nn.ReLU(true));
-CNN:add(nn.SpatialMaxPooling(3,3,2,2));
+model:add(nn.SpatialConvolution(3,64,16,16,8,8,2,2));
+model:add(nn.ReLU(true));
+model:add(nn.SpatialMaxPooling(3,3,2,2));
 
 -- Stage 2
-CNN:add(nn.SpatialConvolution(64,128,8,8,4,4,2,2));
-CNN:add(nn.ReLU(true));
-CNN:add(nn.SpatialMaxPooling(3,3,2,2));
+model:add(nn.SpatialConvolution(64,128,8,8,4,4,2,2));
+model:add(nn.ReLU(true));
+model:add(nn.SpatialMaxPooling(3,3,2,2));
 
 -- Stage 3
-CNN:add(nn.SpatialConvolution(128,256,4,4,2,2,1,1));
-CNN:add(nn.ReLU(true));
-local classifier = nn.Sequential()
+model:add(nn.SpatialConvolution(128,256,4,4,2,2,1,1));
+model:add(nn.ReLU(true));
 -- Final Stage
-classifier:add(nn.View(opt.batchSize*256))
---classifier:add(nn.Dropout(0.5))
-classifier:add(nn.Linear(opt.batchSize*256, 4096))
-classifier:add(nn.Threshold(0, 1e-6))
-classifier:add(nn.Dropout(0.5))
-classifier:add(nn.Linear(4096, 1024))
-classifier:add(nn.Threshold(0, 1e-6))
-classifier:add(nn.Dropout(0.5))
-classifier:add(nn.Linear(1024, 26))
-classifier:add(nn.LogSoftMax())
+model:add(nn.View(256))
+model:add(nn.Linear(256, 26))
+model:add(nn.LogSoftMax())
 
 
-local model = nn.Sequential()
-
-model:add(CNN):add(classifier)
+else
+      print(sys.COLORS.red ..  "==> loading existing network")
+      model = torch.load(opt.load)
+end
 loss = nn.ClassNLLCriterion()
 
 return {

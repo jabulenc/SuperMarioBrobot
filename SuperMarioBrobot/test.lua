@@ -44,6 +44,8 @@ function test(testData)
    for t = 1,testData:size(),opt.batchSize do
       -- disp progress
       xlua.progress(t, testData:size())
+      collectgarbage()
+
 
       -- batch fits?
       if (t + opt.batchSize - 1) > testData:size() then
@@ -62,9 +64,6 @@ function test(testData)
       local preds = model:forward(inputs)
       -- confusion
       for i = 1,opt.batchSize do
-        print (preds[i])
-        print (targets[i])
-        print ()
          confusion:add(preds[i], targets[i])
       end
    end

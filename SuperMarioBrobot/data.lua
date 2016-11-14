@@ -30,7 +30,7 @@ if paths.filep('train.t7')
 
    print(sys.COLORS.red ..  '==> loading previously generated dataset:')
    trainData = torch.load('train.t7')
-   testData = torch.load('test.t7')
+   testData = torch.load('test.t7')--torch.load('train.t7')--
 
    trSize = trainData.data:size(1)
    teSize = testData.data:size(1)
@@ -71,6 +71,10 @@ else
        image.display{image=trainData.data[{{1,128}}], nrow=16, zoom=2, legend = 'Train Data'}
    end
 
+   torch.save('train.t7',trainData)
+
+   collectgarbage()
+
    testData = {
       data = torch.Tensor(teSize, 3, 256, 224),
       labels = torch.Tensor(teSize),
@@ -79,10 +83,10 @@ else
 
    -- load person test data
    for i = 1, teSize , 1 do
-      img = image.load(trainDir..i..".png",3,'byte') -- we pick all of the images in train!
-      trainData.data[trShuffle[i]] = img:clone()
-      derp = trainMeta('union', {Level=0,World=0}).Input[i]
-      trainData.labels[trShuffle[i]] = table.indexOf(classes, derp) --trainMeta('union', {Level=0,World=0}).Input[i] -- gets the input string rep
+      img = image.load(testDir..i..".png",3,'byte') -- we pick all of the images in train!
+      testData.data[i] = img:clone()
+      derp = testMeta('union', {Level=0,World=0}).Input[i]
+      testData.labels[i] = table.indexOf(classes, derp) --trainMeta('union', {Level=0,World=0}).Input[i] -- gets the input string rep
    end
    -- display some examples:
    if opt.visualize then
@@ -91,8 +95,19 @@ else
 
 
    --save created dataset:
-   torch.save('train.t7',trainData)
+   
    torch.save('test.t7',testData)
+
+   if paths.filep('train.t7') 
+   and paths.filep('test.t7') then
+
+   print(sys.COLORS.red ..  '==> loading generated dataset:')
+   trainData = torch.load('train.t7')
+   testData = torch.load('test.t7')--torch.load('train.t7')--
+
+   trSize = trainData.data:size(1)
+   teSize = testData.data:size(1)
+   end
 end
 
 -- Displaying the dataset architecture ---------------------------------------
@@ -104,11 +119,12 @@ print(sys.COLORS.red ..  'Test Data:')
 print(testData)
 print()
 
--- Preprocessing -------------------------------------------------------------
-dofile 'preprocessing.lua'
 
-trainData.size = function() return trSize end
-testData.size = function() return teSize end
+-- Preprocessing -------------------------------------------------------------
+--dofile 'preprocessing.lua'
+
+--trainData.size = function() return trSize end
+--testData.size = function() return teSize end
 
 
 -- classes: GLOBAL var!
@@ -120,7 +136,7 @@ classes = {'ULAB','URAB', 'DLAB', 'DRAB',
 return {
    trainData = trainData,
    testData = testData,
-   mean = mean,
-   std = std,
+   --mean = mean,
+  --std = std,
    classes = classes
 }

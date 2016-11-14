@@ -26,6 +26,8 @@ opt = lapp[[
    -i,--devid              (default 1)           device ID (if using CUDA)
    -s,--size               (default small)       dataset: small or full or extra
    -o,--save               (default results)     save directory
+   -l,--load               (default "")          reload trained network
+   -x,--xtrain             (default 0)           retrain/continue training network
       --patches            (default all)         percentage of samples to use for testing'
       --visualize                                visualize dataset
 ]]
@@ -47,13 +49,18 @@ end
 print(sys.COLORS.red ..  '==> load modules')
 
 local data  = require 'data'
-local train = require 'train'
+local train
+if opt.load == "" then
+      train = require 'train'
+end
 local test  = require 'test'
 
 ----------------------------------------------------------------------
 print(sys.COLORS.red .. '==> training!')
-
+print(sys.COLORS.green .. '...using model')
 while true do
+if (opt.load == "") then
    train(data.trainData)
+end
    test(data.testData)
 end

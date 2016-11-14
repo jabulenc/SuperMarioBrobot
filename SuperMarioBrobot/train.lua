@@ -22,7 +22,7 @@ local t = require 'model'
 local model = t.model
 local fwmodel = t.model
 local loss = t.loss
-
+print(model)
 ----------------------------------------------------------------------
 -- Save light network tools:
 function nilling(module)
@@ -86,10 +86,6 @@ print(sys.COLORS.red ..  '==> defining training procedure')
 local epoch
 
 local function train(trainData)
-    print (trainData.data:size())
-    print (trainData.labels:size())
-    print (x:size())
-    print (yt:size())
     
    -- epoch tracker
    epoch = epoch or 1
@@ -120,19 +116,18 @@ local function train(trainData)
          yt[idx] = trainData.labels[shuffle[i]]
          idx = idx + 1
       end
-
       -- create closure to evaluate f(X) and df/dX
       local eval_E = function(w)
          -- reset gradients
          dE_dw:zero()
-
+         
          -- evaluate function for complete mini batch
          local y = model:forward(x)
          local E = loss:forward(y,yt)
-
          -- estimate df/dW
          local dE_dy = loss:backward(y,yt)   
          model:backward(x,dE_dy)
+         --confusion:batchAdd(y,yt)
 
          -- update confusion
          for i = 1,opt.batchSize do
