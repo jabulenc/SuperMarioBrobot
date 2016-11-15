@@ -15,9 +15,10 @@ successOrFail = "";
 date = os.date("./testdata/%Y%m%d%H%M%S");
 run = 0;
 count = 0;
-input = {};
+prevInputText = "";
+input = "";
 sortString = "\"frame\",\"World\",\"Level\",\"Time\",\"Score\",\"X\",\"Y\",\"Vx\",\"Vy\",\"Input\"\n";
-os.execute("mkdir"..date);
+--os.execute("mkdir"..date);
 file = io.open("./testdata/metadata.csv","w");
 file:write(sortString);
 --IMPORTANT KEEP THESE
@@ -60,7 +61,6 @@ function getInput()
 end;
 
 function outputtext()
-    getInput();
     file:write("\""..count.."\","); -- Frame number
     file:write("\""..memory.readbyte(0x075F).."\","); --World
     file:write("\""..memory.readbyte(0x0760).."\","); --Level
@@ -76,16 +76,20 @@ end
 -- 4, 0, 11 (0C) are Non-play
 -- 8 is normal
 while true do
-    outputtext();
-    gui.savescreenshotas("./testdata/"..count..".png");
-    if (memory.readbyte(0x000E) == 0 or memory.readbyte(0x000E) == 11 or memory.readbyte(0x000E) == 4) then
-        if (memory.readbyte(0x000E) == 0 or memory.readbyte(0x000E) == 11) then
-            successOrFail = 0;
-        else
-            successOrFail = 1;
+    prevInputText = input; -- Store prior input
+    getInput(); -- Grab current input before we do ANYTHING
+    if input ~= prevInputText then -- ONLY record data if it's different than the previous input
+        outputtext();
+        gui.savescreenshotas("./testdata/"..count..".png");
+        if (memory.readbyte(0x000E) == 0 or memory.readbyte(0x000E) == 11 or memory.readbyte(0x000E) == 4) then
+            if (memory.readbyte(0x000E) == 0 or memory.readbyte(0x000E) == 11) then
+                successOrFail = 0;
+            else
+                successOrFail = 1;
+            end
+            --genNewFile();
         end
-        genNewFile();
-    end
-    count = count + 1;
-    emu.frameadvance();     
+        count = count + 1;
+    end -- End recording block
+    emu.frameadvance(); -- Always always always advance frame  
 end
