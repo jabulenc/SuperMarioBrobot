@@ -1,4 +1,4 @@
--- 26 Class Problem
+-- 46 Class Problem
 require 'nn'
 --require 'cudnn'
 require 'torch'
@@ -7,6 +7,28 @@ require 'torch'
 -- SMB apparent Sprite: 16x16
 -- NES Supported Sprites: 8x8, 8x16
 -- Floor dims (I think): 24x16
+
+--------------------------------------------------------------------------------
+-- Recursive routine that restore a saved net for further training
+--------------------------------------------------------------------------------
+
+-- Repopulate the gradWeight through the whole net
+function craftWeight(module)
+   if module.weight then module.gradWeight = module.weight:clone() end
+   if module.bias   then module.gradBias   = module.bias  :clone() end
+   module.gradInput  = torch.Tensor()
+end
+
+function repopulateGrad(network)
+   craftWeight(network)
+   if network.modules then
+      for _,a in ipairs(network.modules) do
+         repopulateGrad(a)
+      end
+   end
+end
+
+------
 
 local model
 if opt.load == "" then
@@ -28,13 +50,14 @@ model:add(nn.SpatialConvolution(128,256,4,4,2,2,1,1));
 model:add(nn.ReLU(true));
 -- Final Stage
 model:add(nn.View(256))
-model:add(nn.Linear(256, 26))
+model:add(nn.Linear(256, 46))
 model:add(nn.LogSoftMax())
 
 
 else
       print(sys.COLORS.red ..  "==> loading existing network")
       model = torch.load(opt.load)
+      repopulateGrad(model)
 end
 loss = nn.ClassNLLCriterion()
 

@@ -14,7 +14,7 @@
 successOrFail = "";
 date = os.date("./testdata/%Y%m%d%H%M%S");
 run = 0;
-count = 0;
+count = 1;
 prevInputText = "";
 input = "";
 sortString = "\"frame\",\"World\",\"Level\",\"Time\",\"Score\",\"X\",\"Y\",\"Vx\",\"Vy\",\"Input\"\n";
@@ -80,8 +80,15 @@ while true do
     getInput(); -- Grab current input before we do ANYTHING
     if input ~= prevInputText then -- ONLY record data if it's different than the previous input
         outputtext();
-        gui.savescreenshotas("./testdata/"..count..".png");
-        if (memory.readbyte(0x000E) == 0 or memory.readbyte(0x000E) == 11 or memory.readbyte(0x000E) == 4) then
+        gui.savescreenshotas("./testdata/"..count..".png");  
+        count = count + 1;
+    end -- End recording block
+    emu.frameadvance(); -- Always always always advance frame  
+end
+
+--[[ Deprecated code but useful for later
+Determine current Mario-State
+if (memory.readbyte(0x000E) == 0 or memory.readbyte(0x000E) == 11 or memory.readbyte(0x000E) == 4) then
             if (memory.readbyte(0x000E) == 0 or memory.readbyte(0x000E) == 11) then
                 successOrFail = 0;
             else
@@ -89,7 +96,5 @@ while true do
             end
             --genNewFile();
         end
-        count = count + 1;
-    end -- End recording block
-    emu.frameadvance(); -- Always always always advance frame  
-end
+
+]]

@@ -39,9 +39,21 @@ else
 
    print(sys.COLORS.red ..  '==> creating a new dataset from raw files:')
 
+-- Direction always first
+-- Precedence: U D L R A B
+
    classes = {'ULAB','URAB', 'DLAB', 'DRAB',
-            'UAB', 'DAB', 'LAB', 'RAB', 'UA', 'UB', 'DA', 'DB', 'LA', 'LB',
-            'RA', 'RB', 'AB', 'U', 'D', 'L', 'R', 'A', 'B', 'START', 'SELECT',''}
+            'DLB', 'DLA', 'DRB', 'DRA',
+            'ULA', 'ULB', 'URA', 'URB',
+            'UAB', 'DAB', 'LAB', 'RAB', 
+            'UA', 'UB', 'DA', 'DB', 
+            'LA', 'LB', 'RA', 'RB', 
+            'UL', 'UR', 'DL', 'DR',
+            'AB', 
+            'U', 'D', 'L', 'R', 'A', 'B', 
+            'START', 'SELECT',
+            '', 
+            'LR', 'UD', 'UDAB', 'UDA', 'UDB', 'LRA', 'LRB', 'LRAB'} -- Weird combos, but to prevent null
 
    local trainDir = '../FCEUX/testdata/'
    local trSize = #ls(trainDir) - 1
@@ -64,6 +76,7 @@ else
       img = image.load(trainDir..i..".png",3,'byte') -- we pick all of the images in train!
       trainData.data[trShuffle[i]] = img:clone()
       derp = trainMeta('union', {Level=0,World=0}).Input[i]
+      --print (i..derp)
       trainData.labels[trShuffle[i]] = table.indexOf(classes, derp) --trainMeta('union', {Level=0,World=0}).Input[i] -- gets the input string rep
    end
    -- display some examples:
@@ -128,9 +141,18 @@ print()
 
 
 -- classes: GLOBAL var!
-classes = {'ULAB','URAB', 'DLAB', 'DRAB',
-            'UAB', 'DAB', 'LAB', 'RAB', 'UA', 'UB', 'DA', 'DB', 'LA', 'LB',
-            'RA', 'RB', 'AB', 'U', 'D', 'L', 'R', 'A', 'B', 'START', 'SELECT',''}
+ classes = {'ULAB','URAB', 'DLAB', 'DRAB',
+            'DLB', 'DLA', 'DRB', 'DRA',
+            'ULA', 'ULB', 'URA', 'URB',
+            'UAB', 'DAB', 'LAB', 'RAB', 
+            'UA', 'UB', 'DA', 'DB', 
+            'LA', 'LB', 'RA', 'RB', 
+            'UL', 'UR', 'DL', 'DR',
+            'AB', 
+            'U', 'D', 'L', 'R', 'A', 'B', 
+            'START', 'SELECT',
+            '', 
+            'LR', 'UD', 'UDAB', 'UDA', 'UDB', 'LRA', 'LRB', 'LRAB'} -- Weird combos, but to prevent null
 
 -- Exports -------------------------------------------------------------------
 return {

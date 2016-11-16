@@ -49,18 +49,13 @@ end
 print(sys.COLORS.red ..  '==> load modules')
 
 local data  = require 'data'
-local train
-if opt.load == "" then
-      train = require 'train'
-end
+local train = require 'train'
 local test  = require 'test'
 
 ----------------------------------------------------------------------
 print(sys.COLORS.red .. '==> training!')
 print(sys.COLORS.green .. '...using model')
 while true do
-if (opt.load == "") then
    train(data.trainData)
-end
    test(data.testData)
 end
