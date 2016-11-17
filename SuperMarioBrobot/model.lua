@@ -50,7 +50,8 @@ model:add(nn.SpatialConvolution(128,256,4,4,2,2,1,1));
 model:add(nn.ReLU(true));
 -- Final Stage
 model:add(nn.View(256))
-model:add(nn.Linear(256, 46))
+model:add(nn.Linear(256, 128))
+model:add(nn.Linear(128, 46))
 model:add(nn.LogSoftMax())
 
 

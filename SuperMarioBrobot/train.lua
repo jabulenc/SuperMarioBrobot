@@ -116,6 +116,7 @@ local function train(trainData)
          yt[idx] = trainData.labels[shuffle[i]]
          idx = idx + 1
       end
+
       -- create closure to evaluate f(X) and df/dX
       local eval_E = function(w)
          -- reset gradients
@@ -128,7 +129,6 @@ local function train(trainData)
          local dE_dy = loss:backward(y,yt)   
          model:backward(x,dE_dy)
          --confusion:batchAdd(y,yt)
-
          -- update confusion
          for i = 1,opt.batchSize do
             confusion:add(y[i],yt[i])
