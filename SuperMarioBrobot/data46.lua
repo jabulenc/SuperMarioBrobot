@@ -42,9 +42,18 @@ else
 -- Direction always first
 -- Precedence: U D L R A B
 
-   classes = {'RA', 'LA',
-            'L', 'R', 'A',
-            'START'}
+   classes = {'ULAB','URAB', 'DLAB', 'DRAB',
+            'DLB', 'DLA', 'DRB', 'DRA',
+            'ULA', 'ULB', 'URA', 'URB',
+            'UAB', 'DAB', 'LAB', 'RAB', 
+            'UA', 'UB', 'DA', 'DB', 
+            'LA', 'LB', 'RA', 'RB', 
+            'UL', 'UR', 'DL', 'DR',
+            'AB', 
+            'U', 'D', 'L', 'R', 'A', 'B', 
+            'START', 'SELECT',
+            '', 
+            'LR', 'UD', 'UDAB', 'UDA', 'UDB', 'LRA', 'LRB', 'LRAB'} -- Weird combos, but to prevent null
 
    local trainDir = '../FCEUX/testdata/'
    local trSize = #ls(trainDir) - 1
@@ -132,9 +141,18 @@ print()
 
 
 -- classes: GLOBAL var!
-   classes = {'RA', 'LA',
-            'L', 'R', 'A',
-            'START'}
+ classes = {'ULAB','URAB', 'DLAB', 'DRAB',
+            'DLB', 'DLA', 'DRB', 'DRA',
+            'ULA', 'ULB', 'URA', 'URB',
+            'UAB', 'DAB', 'LAB', 'RAB', 
+            'UA', 'UB', 'DA', 'DB', 
+            'LA', 'LB', 'RA', 'RB', 
+            'UL', 'UR', 'DL', 'DR',
+            'AB', 
+            'U', 'D', 'L', 'R', 'A', 'B', 
+            'START', 'SELECT',
+            '', 
+            'LR', 'UD', 'UDAB', 'UDA', 'UDB', 'LRA', 'LRB', 'LRAB'} -- Weird combos, but to prevent null
 
 -- Exports -------------------------------------------------------------------
 return {

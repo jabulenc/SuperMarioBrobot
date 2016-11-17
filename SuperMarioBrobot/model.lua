@@ -1,4 +1,4 @@
--- 46 Class Problem
+-- 7 Class Problem
 require 'nn'
 --require 'cudnn'
 require 'torch'
@@ -51,7 +51,7 @@ model:add(nn.ReLU(true));
 -- Final Stage
 model:add(nn.View(256))
 model:add(nn.Linear(256, 128))
-model:add(nn.Linear(128, 46))
+model:add(nn.Linear(128, 6))
 model:add(nn.LogSoftMax())
 
 
