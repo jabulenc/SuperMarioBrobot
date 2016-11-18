@@ -43,4 +43,4 @@ SELECT
 ''
 ```
 
-
+IDEA TODO: Average input guess over 15 frames and choose input from the highest of chosen. Inputs occur every quarter second. This should smooth things out.
