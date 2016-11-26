@@ -42,9 +42,7 @@ else
 -- Direction always first
 -- Precedence: U D L R A B
 
-   classes = {'RA', 'LA',
-            'L', 'R', 'A',
-            'START'}
+   classes = {'RA', 'R', 'A', 'START'}
 
    local trainDir = '../FCEUX/testdata/'
    local trSize = #ls(trainDir) - 1
@@ -132,9 +130,7 @@ print()
 
 
 -- classes: GLOBAL var!
-   classes = {'RA', 'LA',
-            'L', 'R', 'A',
-            'START'}
+   classes = {'RA', 'R', 'A', 'START'}
 
 -- Exports -------------------------------------------------------------------
 return {

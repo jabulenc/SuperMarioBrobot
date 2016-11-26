@@ -51,7 +51,7 @@ model:add(nn.ReLU(true));
 -- Final Stage
 model:add(nn.View(256))
 model:add(nn.Linear(256, 128))
-model:add(nn.Linear(128, 6))
+model:add(nn.Linear(128, 4))
 model:add(nn.LogSoftMax())
 
 

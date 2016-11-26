@@ -51,14 +51,14 @@ function getInput()
         end;
     --if (inputs.up) then input = input.."U" end;
     --if (inputs.down) then input = input.."D" end;
-    if (inputs.left) then input = input.."L" end;
+    --if (inputs.left) then input = input.."L" end;
     if (inputs.right) then input = input.."R" end;
     if (inputs.A) then input = input.."A" end;
     --if (inputs.B) then input = input.."B" end;
     --Take care of a rare but stupid case
-    if (inputs == "LRA") then
-        inputs = "RA";
-    end;
+    --if (inputs == "LRA") then
+    --    inputs = "RA";
+    --end;
 end;
 
 function outputtext()
