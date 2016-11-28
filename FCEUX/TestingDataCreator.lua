@@ -43,8 +43,9 @@ end
 
 -- Return Joypad input as string
 function getInput()
-    input = "";
     inputs = joypad.get(1);
+    if not (inputs.start or inputs.right or inputs.A) then return end; -- ignore empty inputs
+    input = "";
     if (inputs.start) then 
         input = input.."START"
         return 
