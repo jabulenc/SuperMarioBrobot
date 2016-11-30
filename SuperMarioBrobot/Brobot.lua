@@ -22,6 +22,7 @@ classes = {'RA', 'R', 'A', 'START'}
 model;
 predInput = {};
 screen = torch.Tensor(1, 3, 256, 224); -- The frame as a tensor
+frameCt = 0;
 
 -- Necessary Functions
 function IndexOfMax(t)
@@ -66,4 +67,20 @@ end;
 -- Step 1 : Load the network
 model = torch.load(opt.load);
 repopulateGrad(model);
+
+-- Step 2 : The Runtime Loop
+
+while true do
+    frameCt = frameCt + 1;
+    if not (frameCt == 30) then
+        if (resetAt60 % 15 == 0) then
+            GetFrameAndSetScreen();
+            ProcessFrameAndGetInput();
+        end;
+    else
+        ClearInput();
+    end;
+    emu.frameadvance();
+    if frameCt == 60
+end;
 
