@@ -21,7 +21,7 @@ require 'image'
 classes = {'RA', 'R', 'A', 'START'}
 screen = torch.FloatTensor(1, 3, 256, 224); -- The frame as a tensor
 frameCt = 0;
-
+input = "";
 -- Necessary Functions
 
 function craftWeight(module)
@@ -64,22 +64,21 @@ end;
 
 function SetInput(class)
     if class == "START" then
-    joypad.set(1, {start = true, right = false, A = false});
+    joypad.set(1, {start = true});
     end;
     if class == "RA" then
-    joypad.set(1, {start = false, right = true, A = true});
+    joypad.set(1, {right = true, A = true});
     end;
     if class == "A" then
-    joypad.set(1, {start = false, right = false, A = true});
+    joypad.set(1, {A = true});
     end;
     if class == "R" then
-    joypad.set(1, {start = false, right = true, A = false});
+    joypad.set(1, {right = true});
     end;
 end;
 
 function ClearInput()
     joypad.set(1, {start = false, right = false, A = false});
-	gui.text(0,0,"NONE");
 end;
 
 -- Step 1 : Load the network
@@ -87,24 +86,29 @@ model = torch.load("results/model.net");
 repopulateGrad(model);
 res = {0,0,0,0};
 -- Step 2 : The Runtime Loop
-
+SetInput(input); --init input
+joypad.set(1, {right = 1});
 while true do
     frameCt = frameCt + 1;
     gui.text(50,50,frameCt);
-	ay = 1.01;
-gui.text(50,60,classes[IndexOfMax(res)]);
-	gui.text(50,70, res[1]);
-gui.text(50,80, res[2]);
-gui.text(50,90, res[3]);
-gui.text(50,100, res[4]);
+gui.text(0,60,classes[IndexOfMax(res)]);
+gui.text(0,70, res[1]);
+gui.text(0,80, res[2]);
+gui.text(0,90, res[3]);
+gui.text(0,100, res[4]);
     if not (frameCt == 30) then
-        if (frameCt % 15 == 0) then
+        if (frameCt % 20 == 0) then
             GetFrameAndSetScreen();
 	    res = dofile('process.lua');
-	SetInput(classes[IndexOfMax(res)]);
+	    local newInput = classes[IndexOfMax(res)];
+	    if input ~= newInput then
+		input = newInput
+		--joypad.set(1, {right = 1});
+	    end;
         end;
     else
     end;
+    SetInput(input);
     emu.frameadvance();
     if frameCt == 60 then frameCt = 0 end;
 end;
