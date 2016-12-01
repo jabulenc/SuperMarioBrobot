@@ -87,6 +87,7 @@ repopulateGrad(model);
 
 while true do
     frameCt = frameCt + 1;
+    gui.text(50,50,frameCt);
     if not (frameCt == 30) then
         if (frameCt % 15 == 0) then
             GetFrameAndSetScreen();
