@@ -19,8 +19,7 @@ require 'image'
 
 -- Variables
 classes = {'RA', 'R', 'A', 'START'}
-predInput = {};
-screen = torch.Tensor(1, 3, 256, 224); -- The frame as a tensor
+screen = torch.FloatTensor(1, 3, 256, 224); -- The frame as a tensor
 frameCt = 0;
 
 -- Necessary Functions
@@ -52,12 +51,15 @@ end;
 
 function GetFrameAndSetScreen()
     gui.savescreenshotas("./cur.png");
-    screen[1] = image.load("./cur.png",3,'byte');
+    screen = image.load("./cur.png",3,'byte');
 end;
 
-function ProcessFrameAndGetInput()
-    predInput = model:forward(screen);
-    SetInput(classes[IndexOfMax(predInput)]);
+function ProcessFrameAndGetInput(md)
+--print(screen:size())
+	--gui.text(50,50,screen:size());
+    predInput = md:forward(screen);
+--print (predInput);
+    --SetInput(classes[IndexOfMax(predInput)]);
 end;
 
 function SetInput(class)
@@ -80,7 +82,7 @@ function ClearInput()
 end;
 
 -- Step 1 : Load the network
-model = torch.load("./results/model.net");
+model = torch.load("results/model.net");
 repopulateGrad(model);
 
 -- Step 2 : The Runtime Loop
@@ -91,8 +93,8 @@ while true do
     if not (frameCt == 30) then
         if (frameCt % 15 == 0) then
             GetFrameAndSetScreen();
-            ProcessFrameAndGetInput();
-            gui.text(50,50,"Hello world!");
+            ProcessFrameAndGetInput(model);
+            --gui.text(50,50,model);
         end;
     else
         ClearInput();
