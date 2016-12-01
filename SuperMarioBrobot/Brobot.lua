@@ -24,6 +24,22 @@ screen = torch.Tensor(1, 3, 256, 224); -- The frame as a tensor
 frameCt = 0;
 
 -- Necessary Functions
+
+function craftWeight(module)
+   if module.weight then module.gradWeight = module.weight:clone() end
+   if module.bias   then module.gradBias   = module.bias  :clone() end
+   module.gradInput  = torch.Tensor()
+end
+
+function repopulateGrad(network)
+   craftWeight(network)
+   if network.modules then
+      for _,a in ipairs(network.modules) do
+         repopulateGrad(a)
+      end
+   end
+end
+
 function IndexOfMax(t)
     local key, max = 1, t[1]
     for k, v in ipairs(t) do
@@ -36,7 +52,7 @@ end;
 
 function GetFrameAndSetScreen()
     gui.savescreenshotas("./cur.png");
-    screen[1] = image.load"./cur.png",3,'byte')
+    screen[1] = image.load("./cur.png",3,'byte');
 end;
 
 function ProcessFrameAndGetInput()
@@ -64,7 +80,7 @@ function ClearInput()
 end;
 
 -- Step 1 : Load the network
-model = torch.load(opt.load);
+model = torch.load("./results/model.net");
 repopulateGrad(model);
 
 -- Step 2 : The Runtime Loop
@@ -72,7 +88,7 @@ repopulateGrad(model);
 while true do
     frameCt = frameCt + 1;
     if not (frameCt == 30) then
-        if (resetAt60 % 15 == 0) then
+        if (frameCt % 15 == 0) then
             GetFrameAndSetScreen();
             ProcessFrameAndGetInput();
         end;
@@ -80,6 +96,6 @@ while true do
         ClearInput();
     end;
     emu.frameadvance();
-    if frameCt == 60
+    if frameCt == 60 then frameCt = 0 end;
 end;
 
