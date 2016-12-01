@@ -91,6 +91,7 @@ while true do
         if (frameCt % 15 == 0) then
             GetFrameAndSetScreen();
             ProcessFrameAndGetInput();
+            gui.text(50,50,"Hello world!");
         end;
     else
         ClearInput();
