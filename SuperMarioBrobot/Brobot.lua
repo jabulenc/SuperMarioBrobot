@@ -19,7 +19,6 @@ require 'image'
 
 -- Variables
 classes = {'RA', 'R', 'A', 'START'}
-model;
 predInput = {};
 screen = torch.Tensor(1, 3, 256, 224); -- The frame as a tensor
 frameCt = 0;
