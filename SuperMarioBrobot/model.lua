@@ -36,7 +36,7 @@ if opt.load == "" then
 model = nn.Sequential();
 
 -- Stage 1
-model:add(nn.SpatialConvolution(3,64,16,16,8,8,2,2));
+model:add(nn.SpatialConvolution(3,64,32,32,8,8,2,2));
 model:add(nn.ReLU(true));
 model:add(nn.SpatialMaxPooling(3,3,2,2));
 

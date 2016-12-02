@@ -79,16 +79,18 @@ end
 -- 8 is normal
 while true do
     --resetAt60 = resetAt60 +1;
+    if (memory.readbyte(0x001D) == 0x03) then memory.writebyte(0x0772, 0x00)
+     memory.writebyte(0x0750, 0xA5) end;
     prevInputText = input; -- Store prior input
     inputs = joypad.get(1);
     if (inputs.start or inputs.right or inputs.A) then
         getInput(); -- Grab current input before we do ANYTHING
     
-    --if (input ~= prevInputText or (resetAt60 % 15 == 0)) then -- ONLY record data if it's different than the previous input
+    if (input ~= prevInputText) then -- ONLY record data if it's different than the previous input
         outputtext();
         gui.savescreenshotas("./testdata/"..count..".png");  
         count = count + 1;
-    --end -- End recording block
+    end -- End recording block
     end;
     emu.frameadvance(); -- Always always always advance frame 
     --if (resetAt60 == 59) then resetAt60 = 0 end
