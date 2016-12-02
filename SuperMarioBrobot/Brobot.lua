@@ -77,6 +77,40 @@ function SetInput(class)
     end;
 end;
 
+function SetInput4(pred)
+if (memory.readbyte(0x0770) == 1) then
+    if pred[2]  > .28 and pred[3]  > .2284 then -- RA
+    gui.text(0,60,"RA");
+    joypad.set(1, {right = true, A = true});
+    emu.frameadvance();
+    return;
+    end;
+    if pred[2]  < .28 and pred[3]  < .2284 then -- R
+    gui.text(0,60,"R off");
+    joypad.set(1, {right = false, A = joypad.get(1).A});
+    end;
+    if pred[2]  > .28 and pred[3]  < .2284 then -- R
+    gui.text(0,60,"R on");
+    joypad.set(1, {right = true, A= joypad.get(1).A});
+    end;
+    if pred[2]  < .28 and pred[3]  < .2284 then -- A
+    gui.text(0,60,"A off");
+    joypad.set(1, {right = joypad.get(1).right, A = false});
+    end;
+    if pred[2]  < .28 and pred[3]  > .2284 then -- A
+    gui.text(0,60,"A on");
+    joypad.set(1, {right = joypad.get(1).right, A = true});
+    end;
+    emu.frameadvance();
+else
+    if pred[4]  > .25 then -- Start
+    gui.text(0,60,"START");
+    joypad.set(1, {start = true});
+    emu.frameadvance();
+    end;
+end;
+end;
+
 function ClearInput()
     joypad.set(1, {start = false, right = false, A = false});
 end;
@@ -91,7 +125,7 @@ joypad.set(1, {right = 1});
 while true do
     frameCt = frameCt + 1;
     gui.text(50,50,frameCt);
-gui.text(0,60,classes[IndexOfMax(res)]);
+--gui.text(0,60,classes[IndexOfMax(res)]);
 gui.text(0,70, res[1]);
 gui.text(0,80, res[2]);
 gui.text(0,90, res[3]);
@@ -103,13 +137,21 @@ gui.text(0,100, res[4]);
 	    local newInput = classes[IndexOfMax(res)];
 	    if input ~= newInput then
 		input = newInput
-		--joypad.set(1, {right = 1});
 	    end;
         end;
     else
-    end;
-    SetInput(input);
+       if joypad.get(1).start then
+       	joypad.set(1, {start = false});
     emu.frameadvance();
+       end;
+       if joypad.get(1).A then
+       	joypad.set(1, {A = false});
+    emu.frameadvance();
+       end;
+    end;
+    --SetInput(input);
+    SetInput4(res)
+    --emu.frameadvance();
     if frameCt == 60 then frameCt = 0 end;
 end;
 
