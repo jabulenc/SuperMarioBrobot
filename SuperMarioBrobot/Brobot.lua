@@ -78,29 +78,37 @@ function SetInput(class)
 end;
 
 function SetInput4(pred)
+local a = joypad.get(1).A;
+local r = joypad.get(1).right;
+local s = joypad.get(1).start;
 if (memory.readbyte(0x0770) == 1) then
-    if pred[2]  > .28 and pred[3]  > .2284 then -- RA
+    if pred[1]  > 1 then -- RA
     gui.text(0,60,"RA");
     joypad.set(1, {right = true, A = true});
     emu.frameadvance();
     return;
     end;
-    if pred[2]  < .28 and pred[3]  < .2284 then -- R
+    if pred[2]  < .262 then -- R
     gui.text(0,60,"R off");
-    joypad.set(1, {right = false, A = joypad.get(1).A});
+    --joypad.set(1, {right = false, A = joypad.get(1).A});
+    r = false;
     end;
-    if pred[2]  > .28 and pred[3]  < .2284 then -- R
+    if pred[2]  > .262 then -- R
     gui.text(0,60,"R on");
-    joypad.set(1, {right = true, A= joypad.get(1).A});
+    --joypad.set(1, {right = true, A= joypad.get(1).A});
+    r = true;
     end;
-    if pred[2]  < .28 and pred[3]  < .2284 then -- A
+    if pred[3]  < .2474 then -- A
     gui.text(0,60,"A off");
-    joypad.set(1, {right = joypad.get(1).right, A = false});
+    --joypad.set(1, {right = joypad.get(1).right, A = false});
+    a = false;
     end;
-    if pred[2]  < .28 and pred[3]  > .2284 then -- A
+    if pred[3]  > .2474 then -- A
     gui.text(0,60,"A on");
-    joypad.set(1, {right = joypad.get(1).right, A = true});
+    --joypad.set(1, {right = joypad.get(1).right, A = true});
+    a = true;
     end;
+    joypad.set(1, {right = r, A = a});
     emu.frameadvance();
 else
     if pred[4]  > .25 then -- Start
@@ -130,7 +138,7 @@ gui.text(0,70, res[1]);
 gui.text(0,80, res[2]);
 gui.text(0,90, res[3]);
 gui.text(0,100, res[4]);
-    if not (frameCt == 30) then
+    if not (frameCt == 59) then
         if (frameCt % 20 == 0) then
             GetFrameAndSetScreen();
 	    res = dofile('process.lua');
