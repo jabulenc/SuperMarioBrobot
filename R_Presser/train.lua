@@ -86,7 +86,7 @@ print(sys.COLORS.red ..  '==> defining training procedure')
 local epoch
 
 local function train(trainData)
-    
+
    -- epoch tracker
    epoch = epoch or 1
 
@@ -121,9 +121,11 @@ local function train(trainData)
       local eval_E = function(w)
          -- reset gradients
          dE_dw:zero()
-         
+
          -- evaluate function for complete mini batch
          local y = model:forward(x)
+         print (y);
+         print(yt);
          local E = loss:forward(y,yt)
          -- estimate df/dW
          local dE_dy = loss:backward(y,yt)   
