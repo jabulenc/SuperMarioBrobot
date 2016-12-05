@@ -124,8 +124,6 @@ local function train(trainData)
 
          -- evaluate function for complete mini batch
          local y = model:forward(x)
-         print (y);
-         print(yt);
          local E = loss:forward(y,yt)
          -- estimate df/dW
          local dE_dy = loss:backward(y,yt)   
