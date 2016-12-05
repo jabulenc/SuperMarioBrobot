@@ -42,7 +42,7 @@ else
 -- Direction always first
 -- Precedence: U D L R A B
 
-   classes = {0,1}
+   classes = {1,2}
 
    local trainDir = '../FCEUX/testdata/'
    local trSize = #ls(trainDir) - 1
@@ -66,10 +66,11 @@ else
       trainData.data[trShuffle[i]] = img:clone()
       derp = trainMeta('union', {Level=0,World=0}).Input[i]
       if derp == "A" or derp == "RA" then
-         trainData.labels[i] = 1;
+         trainData.labels[i] = 2;
       else
-        trainData.labels[i] = 0;
+        trainData.labels[i] = 1;
       end;
+      collectgarbage()
    end
    -- display some examples:
    if opt.visualize then
@@ -92,10 +93,11 @@ else
       derp = testMeta('union', {Level=0,World=0}).Input[i]
       testData.data[i] = img:clone()
       if derp == "A" or derp == "RA" then
-         testData.labels[i] = 1;
+         testData.labels[i] = 2;
       else
-        testData.labels[i] = 0;
+        testData.labels[i] = 1;
       end;
+      collectgarbage()
    end
    -- display some examples:
    if opt.visualize then
@@ -137,7 +139,7 @@ print()
 
 
 -- classes: GLOBAL var!
-   classes = {0,1}
+   classes = {1,2}
 
 -- Exports -------------------------------------------------------------------
 return {
