@@ -43,7 +43,7 @@ end
 
 -- Return Joypad input as string
 function getInput()
-    inputs = joypad.get(1);
+    --inputs = joypad.get(1);
     if not (inputs.start or inputs.right or inputs.A) then return end; -- ignore empty inputs
     input = "";
     if (inputs.start) then 
@@ -79,13 +79,19 @@ end
 -- 8 is normal
 while true do
     resetAt60 = resetAt60 +1;
+    if (memory.readbyte(0x001D) == 0x03) then memory.writebyte(0x0772, 0x00)
+     memory.writebyte(0x0750, 0xA5) end;
     prevInputText = input; -- Store prior input
-    getInput(); -- Grab current input before we do ANYTHING
-    if (input ~= prevInputText or (resetAt60 % 15 == 0)) and input ~= "" then -- ONLY record data if it's different than the previous input, if it's not empty, or if it's been a quarter second
+    inputs = joypad.get(1);
+    if (inputs.start or inputs.right or inputs.A) then
+        getInput(); -- Grab current input before we do ANYTHING
+    
+    if ((input == "A" or input == "RA" or input == "START") and (resetAt60 % 15 == 0)) or (input == "R" and (resetAt60 % 30 == 0)) then  
         outputtext();
         gui.savescreenshotas("./evaldata/"..count..".png");  
         count = count + 1;
     end -- End recording block
+    end;
     emu.frameadvance(); -- Always always always advance frame 
     if (resetAt60 == 59) then resetAt60 = 0 end
 end

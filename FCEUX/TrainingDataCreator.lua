@@ -86,7 +86,7 @@ while true do
     if (inputs.start or inputs.right or inputs.A) then
         getInput(); -- Grab current input before we do ANYTHING
     
-    if (input == "A" or input == "RA" or input == "START") or (input == "R" and (resetAt60 % 30 == 0)) then 
+    if ((input == "A" or input == "RA" or input == "START") and (resetAt60 % 10 == 0)) or (input == "R" and (resetAt60 % 15 == 0)) then 
         outputtext();
         gui.savescreenshotas("./testdata/"..count..".png");  
         count = count + 1;

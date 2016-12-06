@@ -30,7 +30,9 @@ if paths.filep('train.t7')
 
    print(sys.COLORS.red ..  '==> loading previously generated dataset:')
    trainData = torch.load('train.t7')
+   collectgarbage()
    testData = torch.load('test.t7')--torch.load('train.t7')--
+   collectgarbage()
 
    trSize = trainData.data:size(1)
    teSize = testData.data:size(1)
@@ -63,7 +65,7 @@ else
    -- load person train data
    for i = 1, trSize , 1 do
       img = image.load(trainDir..i..".png",3,'byte') -- we pick all of the images in train!
-      trainData.data[trShuffle[i]] = img:clone()
+      trainData.data[trShuffle[i]] = img--:clone()
       derp = trainMeta('union', {Level=0,World=0}).Input[i]
       if derp == "R" or derp == "RA" then
          trainData.labels[i] = 2;
@@ -90,7 +92,7 @@ else
    for i = 1, teSize , 1 do
       img = image.load(testDir..i..".png",3,'byte') -- we pick all of the images in train!
       derp = testMeta('union', {Level=0,World=0}).Input[i]
-      testData.data[i] = img:clone()
+      testData.data[i] = img--:clone()
       if derp == "R" or derp == "RA" then
          testData.labels[i] = 2;
       else
@@ -106,13 +108,16 @@ else
    --save created dataset:
    
    torch.save('test.t7',testData)
+   collectgarbage()
 
    if paths.filep('train.t7') 
    and paths.filep('test.t7') then
 
    print(sys.COLORS.red ..  '==> loading generated dataset:')
    trainData = torch.load('train.t7')
+   collectgarbage()
    testData = torch.load('test.t7')--torch.load('train.t7')--
+   collectgarbage()
 
    trSize = trainData.data:size(1)
    teSize = testData.data:size(1)

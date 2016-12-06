@@ -36,20 +36,21 @@ if opt.load == "" then
 model = nn.Sequential();
 
 -- Stage 1
-model:add(nn.SpatialConvolution(3,64,32,32,16,16,8,8));
+model:add(nn.SpatialConvolution(3,64,48,12,4,4,12,6));
 model:add(nn.ReLU(true));
---model:add(nn.SpatialMaxPooling(3,3,2,2));
+--model:add(nn.SpatialMaxPooling(2,2,1,1));
 
 -- Stage 2
-model:add(nn.SpatialConvolution(64,128,16,16,8,8,4,4));
+model:add(nn.SpatialConvolution(64,128,24,8,4,4,4,2));
 model:add(nn.ReLU(true));
---model:add(nn.SpatialMaxPooling(3,3,2,2));
+--model:add(nn.SpatialMaxPooling(2,2,1,1));
 
 -- Stage 3
-model:add(nn.SpatialConvolution(128,256,8,8,4,4,2,2));
+model:add(nn.SpatialConvolution(128,256,16,8,4,4,2,1));
 model:add(nn.ReLU(true));
 -- Final Stage
-model:add(nn.View(256))
+model:add(nn.View(256*3))
+model:add(nn.Linear(256*3, 256))
 model:add(nn.Linear(256, 128))
 model:add(nn.Linear(128, 2))
 model:add(nn.LogSoftMax())
